@@ -1,0 +1,7 @@
+{
+  "name": "VoiceSync AI",
+  "description": "Enterprise-grade speech recognition agent dashboard with RK3576 local deployment and Alibaba Cloud integration.",
+  "requestFramePermissions": [
+    "microphone"
+  ]
+}
