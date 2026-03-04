@@ -23,19 +23,18 @@ const App: React.FC = () => {
   // Check for existing session
   useEffect(() => {
     const checkSession = async () => {
-      const { data: { session } } = await supabase.auth.getSession();
-      if (session) {
-        setCurrentScreen(ScreenState.DASHBOARD);
-      }
+      // 每次打开页面先清除旧 session，强制重新登录
+      await supabase.auth.signOut();
       setLoading(false);
     };
 
     checkSession();
 
     const { data: { subscription } } = supabase.auth.onAuthStateChange((_event, session) => {
-      if (session) {
+      // 只响应当前会话的登录/登出事件
+      if (_event === 'SIGNED_IN' && session) {
         setCurrentScreen(ScreenState.DASHBOARD);
-      } else {
+      } else if (_event === 'SIGNED_OUT') {
         setCurrentScreen(ScreenState.LOGIN);
       }
     });
@@ -67,21 +66,21 @@ const App: React.FC = () => {
   return (
     <div className={`min-h-screen font-sans ${theme === ThemeMode.DARK ? 'bg-dark-bg text-white' : 'bg-slate-50 text-slate-900'}`}>
       {currentScreen === ScreenState.LOGIN && (
-        <LoginScreen 
-          onNavigate={navigateTo} 
-          onLogin={() => navigateTo(ScreenState.DASHBOARD)} 
+        <LoginScreen
+          onNavigate={navigateTo}
+          onLogin={() => navigateTo(ScreenState.DASHBOARD)}
         />
       )}
-      
+
       {currentScreen === ScreenState.REGISTER && (
-        <RegisterScreen 
-          onNavigate={navigateTo} 
-          onRegister={() => navigateTo(ScreenState.DASHBOARD)} 
+        <RegisterScreen
+          onNavigate={navigateTo}
+          onRegister={() => navigateTo(ScreenState.DASHBOARD)}
         />
       )}
-      
+
       {currentScreen === ScreenState.DASHBOARD && (
-        <Dashboard 
+        <Dashboard
           onLogout={handleLogout}
           toggleTheme={toggleTheme}
           currentTheme={theme}

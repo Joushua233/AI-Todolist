@@ -17,13 +17,7 @@ export const LoginScreen: React.FC<LoginScreenProps> = ({ onNavigate, onLogin })
     !isConfigured ? 'Supabase 未配置，请在环境变量中设置 VITE_SUPABASE_URL 和 VITE_SUPABASE_ANON_KEY。' : null
   );
 
-  React.useEffect(() => {
-    const savedEmail = localStorage.getItem('rememberedEmail');
-    if (savedEmail) {
-      setEmail(savedEmail);
-      setRememberMe(true);
-    }
-  }, []);
+
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -39,11 +33,6 @@ export const LoginScreen: React.FC<LoginScreenProps> = ({ onNavigate, onLogin })
       if (signInError) throw signInError;
 
       if (data.user) {
-        if (rememberMe) {
-          localStorage.setItem('rememberedEmail', email);
-        } else {
-          localStorage.removeItem('rememberedEmail');
-        }
         onLogin();
       }
     } catch (err: any) {
@@ -76,12 +65,12 @@ export const LoginScreen: React.FC<LoginScreenProps> = ({ onNavigate, onLogin })
             <label className="text-gray-700 text-sm font-semibold ml-1">账号/邮箱</label>
             <div className="relative flex items-center">
               <span className="material-symbols-outlined absolute left-4 text-gray-400 text-lg">person</span>
-              <input 
+              <input
                 value={email}
                 onChange={(e) => setEmail(e.target.value)}
-                className="flex w-full rounded-lg text-gray-900 bg-white focus:outline-0 focus:ring-2 focus:ring-primary/20 focus:border-primary border border-gray-200 h-12 pl-12 placeholder:text-gray-400 text-sm transition-all" 
-                placeholder="手机号、邮箱或用户名" 
-                type="text" 
+                className="flex w-full rounded-lg text-gray-900 bg-white focus:outline-0 focus:ring-2 focus:ring-primary/20 focus:border-primary border border-gray-200 h-12 pl-12 placeholder:text-gray-400 text-sm transition-all"
+                placeholder="手机号、邮箱或用户名"
+                type="text"
                 required
               />
             </div>
@@ -91,16 +80,16 @@ export const LoginScreen: React.FC<LoginScreenProps> = ({ onNavigate, onLogin })
             <label className="text-gray-700 text-sm font-semibold ml-1">密码</label>
             <div className="relative flex items-center group">
               <span className="material-symbols-outlined absolute left-4 text-gray-400 text-lg">lock</span>
-              <input 
+              <input
                 value={password}
                 onChange={(e) => setPassword(e.target.value)}
-                className="flex w-full rounded-lg text-gray-900 bg-white focus:outline-0 focus:ring-2 focus:ring-primary/20 focus:border-primary border border-gray-200 h-12 pl-12 pr-12 placeholder:text-gray-400 text-sm transition-all" 
-                placeholder="请输入密码" 
-                type={showPassword ? "text" : "password"} 
+                className="flex w-full rounded-lg text-gray-900 bg-white focus:outline-0 focus:ring-2 focus:ring-primary/20 focus:border-primary border border-gray-200 h-12 pl-12 pr-12 placeholder:text-gray-400 text-sm transition-all"
+                placeholder="请输入密码"
+                type={showPassword ? "text" : "password"}
                 required
               />
-              <button 
-                className="absolute right-4 text-gray-400 hover:text-primary transition-colors" 
+              <button
+                className="absolute right-4 text-gray-400 hover:text-primary transition-colors"
                 type="button"
                 onClick={() => setShowPassword(!showPassword)}
               >
@@ -111,9 +100,9 @@ export const LoginScreen: React.FC<LoginScreenProps> = ({ onNavigate, onLogin })
 
           <div className="flex items-center justify-between py-1">
             <label className="flex items-center gap-2 cursor-pointer group">
-              <input 
-                className="h-4 w-4 rounded border-gray-300 text-primary focus:ring-primary focus:ring-offset-0 transition-colors" 
-                type="checkbox" 
+              <input
+                className="h-4 w-4 rounded border-gray-300 text-primary focus:ring-primary focus:ring-offset-0 transition-colors"
+                type="checkbox"
                 checked={rememberMe}
                 onChange={(e) => setRememberMe(e.target.checked)}
               />
@@ -122,8 +111,8 @@ export const LoginScreen: React.FC<LoginScreenProps> = ({ onNavigate, onLogin })
             <a className="text-primary text-xs font-medium hover:underline" href="#">忘记密码？</a>
           </div>
 
-          <button 
-            className="flex w-full cursor-pointer items-center justify-center overflow-hidden rounded-lg h-12 px-4 bg-primary text-white text-base font-semibold leading-normal hover:bg-primary-hover transition-all shadow-md active:scale-[0.98] disabled:opacity-50 disabled:cursor-not-allowed" 
+          <button
+            className="flex w-full cursor-pointer items-center justify-center overflow-hidden rounded-lg h-12 px-4 bg-primary text-white text-base font-semibold leading-normal hover:bg-primary-hover transition-all shadow-md active:scale-[0.98] disabled:opacity-50 disabled:cursor-not-allowed"
             type="submit"
             disabled={loading}
           >
@@ -135,7 +124,7 @@ export const LoginScreen: React.FC<LoginScreenProps> = ({ onNavigate, onLogin })
         <div className="mt-8 pt-6 border-t border-gray-100 text-center">
           <p className="text-sm text-gray-500">
             还没有账号？
-            <button 
+            <button
               onClick={() => onNavigate(ScreenState.REGISTER)}
               className="text-primary font-bold hover:underline ml-1"
             >
